@@ -1,0 +1,11 @@
+.form-group {
+  margin-bottom: 20px; /* Увеличить отступ между элементами */
+}
+
+
+.form-container {
+  max-width: 470px;
+  max-height: 428px;
+  border: 1px solid #ccccccad;
+  padding: 20px;
+}
