@@ -1,6 +1,8 @@
 <form (ngSubmit)="onSubmit()">
 
   <head>
+    <meta charset="UTF-8">
+    <title>Заголовок с лентой</title>
     <style>
       body {
         display: flex;
@@ -20,10 +22,10 @@
       }
 
       /* Дополнительные стили для формы */
-      .form-container h1 {
+      /*.form-container h1 {
         text-align: center;
         margin-bottom: 20px;
-      }
+      }*/
 
 
       .form-container input[type="text"],
@@ -35,6 +37,56 @@
         border-radius: 3px;
       }
 
+      .form-container input-container {
+        display: flex;
+        align-items: center; /* Выравнивание по вертикали */
+      }
+
+      .form-container label {
+        width: 100px; /* Ширина заголовка */
+        text-align: right; /* Выравнивание заголовка по правому краю */
+      }
+
+
+       h1 {
+      background: linear-gradient(to right, #f00, #f00 50%, #f00 50%, #f00);
+      background-size: 100% 50px; /* Размер ленты */
+      background-repeat: no-repeat; /* Без повторения */
+      background-position: bottom; /* Положение ленты */
+      padding-bottom: 0px; /* Отступ снизу */
+      text-align: center; /* Выравнивание текста */
+      color: #fff; /* Цвет текста */
+      text-shadow: 0 0 2px #000; /* Тень для текста */
+      margin-bottom: 20px; /* Отступ снизу */
+
+      /* Срез на конце */
+      background-clip: content-box; /* Обрезаем градиент */
+      padding-right: 0px; /* Создаем пространство для среза */
+      overflow: visible; /* Скрываем лишнее */
+
+
+      -webkit-clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%); /* Для Chrome, Safari */
+      clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%); /* Для других браузеров */
+
+      position: relative;
+      left: -40px;/*смещение ленты */
+
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);/*попытка придать объема*/
+
+      z-index: 1;
+      }
+
+      h1::after {
+        content: "";
+        position: absolute;
+        bottom: -20px;
+        left: 0;
+        width: 100%;
+        height: 29px; /* Высота треугольника */
+        background-color: #f00; /* Цвет треугольника */
+        clip-path: polygon(0 100%, 100% 100%, 100% 0);
+        z-index: 2;
+      }
     </style>
   </head>
 
@@ -44,7 +96,7 @@
 
       <h1> Напишите нам </h1>
 
-      <div class="form-group">
+      <div class="input-container">
         <label for="name">Ваше имя:</label>
         <input type="text" id="myInput1"
          style="background-image: url('https://sun6-23.userapi.com/s/v1/if1/3erJiPVEpUTSDp04qPKrUiv5Hfh9WT_QkoyARqM6xgYBhCojZO-F-UyJXMCXE1CVG0FWsve9.jpg?size=1080x1080&quality=96&crop=419,0,1080,1080&ava=1');
@@ -67,7 +119,7 @@
       </div>
 
 
-      <div class="form-group">
+      <div class="input-container">
         <label for="email">Ваш email:</label>
         <input type="email" id="myInput2"
          style="background-image: url('https://img.razrisyika.ru/kart/87/345415-konvertik-14.jpg');
@@ -90,7 +142,7 @@
       </div>
 
 
-      <div class="form-group">
+      <div class="input-container">
           <label for="telephone">Ваш телефон:</label>
           <input type="text" id="myInput3"
          style="background-image: url('https://catherineasquithgallery.com/uploads/posts/2021-02/1614516507_121-p-telefon-na-belom-fone-129.jpg');
@@ -131,7 +183,37 @@
 
       <div class="form-group">
           <label for="subject">Тема:</label>
-          <input type="text" class="form-control" id="subject" [(ngModel)]="telephone" placeholder="Введите ваш телефон">
+          <input type="text" class="form-control" id="subject" >
+
+          <script>
+            // Получение вариантов текста из JSON файла
+            fetch('F:\AngularProject\vs1-ex\input.json')
+              .then(response => response.json())
+              .then(data => {
+                const input = document.getElementById('subject');
+                input.value = data.defaultText; // Заполните поле ввода текстом из JSON
+
+                // Создание кнопок для вариантов текста
+                const optionsContainer = document.createElement('div');
+                data.options.forEach(option => {
+                  const button = document.createElement('button');
+                  button.textContent = option.label;
+                  button.addEventListener('click', () => {
+                    input.value += option.text;
+                  });
+                  optionsContainer.appendChild(button);
+                });
+                document.body.appendChild(optionsContainer); // Добавьте контейнер с кнопками на страницу
+              });
+
+            // Обработка события выбора текста
+            const input = document.getElementById('subject');
+
+            input.addEventListener('select', function() {
+              const selectedText = input.value.substring(input.selectionStart, input.selectionEnd);
+              console.log("Выбранный текст:", selectedText);
+            });
+          </script>
       </div>
 
 
